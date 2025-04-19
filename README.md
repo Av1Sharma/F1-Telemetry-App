@@ -1,6 +1,6 @@
 # 🏎️ F1 Telemetry App
 
-This is a Streamlit web app using my Python scripts [here](https://github.com/Av1Sharma/F1-Telemetry-Visualization) that lets users visualize Formula 1 telemetry data in 3D and view detailed race statistics for individual drivers during specific sessions. Powered by FastF1, Plotly, and Streamlit, it provides a unique interactive experience for fans and analysts alike.
+This is a Streamlit web app using my Python scripts [here](https://github.com/Av1Sharma/F1-Telemetry-Visualization) that lets users visualize Formula 1 telemetry data in 3D and view detailed race statistics for individual drivers during specific sessions. Powered by FastF1, Plotly, and Streamlit, it provides a unique interactive experience for fans and analysts alike. View it live [here](https://f1telemetry-app.streamlit.app/)!
 
 ## 🚀 Features
 
