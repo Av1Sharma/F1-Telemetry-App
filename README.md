@@ -1,46 +1,39 @@
-# 🏎️ F1 Telemetry App
+# Lap Lab — F1 Telemetry
 
-This is a Streamlit web app using my Python scripts [here](https://github.com/Av1Sharma/F1-Telemetry-Visualization) that lets users visualize Formula 1 telemetry data in 3D and view detailed race statistics for individual drivers during specific sessions. Powered by FastF1, Plotly, and Streamlit, it provides a unique interactive experience for fans and analysts alike. View it live [here](https://f1telemetry-app.streamlit.app/)!
+A static React + TypeScript telemetry workspace. Compare eight recorded laps from Monza 2024 qualifying (Norris, Piastri, Leclerc, Sainz), switch speed/throttle/brake traces, scrub or replay a lap, inspect sectors, and export driver A's samples to CSV.
 
-## 🚀 Features
+Live demo: https://av1sharma.github.io/lap-lab/
 
-- 📊 **3D Animated Track Visualization**: See your selected driver's telemetry data animate across the track.
-- 📈 **Telemetry Breakdown**: Includes X, Y, Z position data and speed.
-- 🏁 **Session Stats Display**: Shows driver name, team, grid position, final position, points, fastest lap time, and lap number.
-- 🔍 **User Input Controls**: Easily select season, race, session, and driver.
-- ⚡ **FastF1 Caching**: Speeds up repeated queries using local caching.
+## Run and build
 
-
-## 📦 Installation
-
-### Requirements
-
-- Python 3.8+
-- [FastF1](https://docs.fastf1.dev/)
-- Streamlit
-- Plotly
-- Pandas
-
-### Installation Steps
-
-```bash
-git clone https://github.com/Av1Sharma/F1-Telemetry-App.git
-cd F1-Telemetry-App
-pip install -r requirements.txt
+```sh
+cd web
+npm ci
+npm run dev
+npm test
+npm run build
 ```
 
-### Running Locally
-```bash 
-streamlit run app.py
-```
-Make sure to create a cache directory
-```bash 
-mkdir cache
-```
+The `web/dist` directory is deployable on any static host. Relative asset URLs support a subdirectory. The portfolio publishes this build at `/lap-lab/`.
 
-## ⚠️ Notes
-If deploying locally, ensure the cache/ directory exists before running the app.
+## Data and methodology
 
-Grid positions and lap times may return "N/A" for some drivers or sessions if FastF1 data is incomplete.
+`web/public/monza-2024.json` contains real historical data from [OpenF1](https://openf1.org/), session 9586. The Python standard-library script `scripts/fetch_demo.py` reproduces the dataset, with bounded requests, retries, and response checks. Each driver's two fastest recorded non-out laps are included. The feed may include deleted laps; this is not an official qualifying classification.
 
+The dashboard runs without an API, account, paid subscription, or server. Source data is bundled, not fetched during playback. It does not claim live race coverage.
 
+Distances are estimated with trapezoidal integration of sampled speed, then normalized to the published 5,793 m circuit length. Driver traces share estimated distance, not elapsed time. Position samples are nearest timestamp matches. Interpolation is linear for continuous channels; gear/brake are discrete. Official lap and sector durations are kept separate from approximated telemetry. No fabricated telemetry is used.
+
+## Demo video (60–90 seconds)
+
+1. Open the default Norris/Leclerc comparison and explain the 0.134 s difference.
+2. Play at 2×; pause near a braking zone and move the distance slider.
+3. Switch between speed, throttle, and brake. Point out synchronized values and map markers.
+4. Change driver B to Piastri and compare sector differences.
+5. Select an alternate lap and download driver A's CSV.
+
+## Architecture / validation
+
+React maintains driver/lap/channel/replay state. SVG renders responsive traces and the track; binary search interpolates telemetry by distance. TypeScript checks the data interface. Node tests cover interpolation boundaries and CSV/time formatting. The production dataset has four drivers and eight laps.
+
+`app.py` and `backend.py` are the legacy Streamlit implementation, retained for history. The supported application is `web/`; the old Streamlit deployment is no longer the portfolio demo.
