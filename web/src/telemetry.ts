@@ -1,5 +1,5 @@
 export type Point = {t:number;d:number;speed:number;throttle:number;brake:number;gear:number;rpm:number;x:number;y:number};
-export type Lap = {number:number;time:number;sectors:number[];points:Point[]};
+export type Lap = {number:number;time:number;sectors:(number|null)[];points:Point[];start?:string;outLap?:boolean;hasLocation?:boolean};
 export type Driver = {number:number;name:string;code:string;team:string;laps:Lap[]};
 export type Session = {title:string;year:number;session:string;sessionKey:number;source:string;distance:number;drivers:Driver[]};
 export function atDistance(points:Point[],distance:number):Point {
@@ -13,6 +13,6 @@ export function atDistance(points:Point[],distance:number):Point {
   for(const k of ['t','speed','throttle','rpm','x','y'] as const)p[k]=a[k]+(b[k]-a[k])*f;
   return p;
 }
-export function lapTime(t:number){return `${Math.floor(t/60)}:${(t%60).toFixed(3).padStart(6,'0')}`;}
+export function lapTime(t:number){if(!Number.isFinite(t))return '—';return `${Math.floor(t/60)}:${(t%60).toFixed(3).padStart(6,'0')}`;}
 export function delta(a:Lap,b:Lap,d:number){return atDistance(b.points,d).t-atDistance(a.points,d).t;}
 export function csv(lap:Lap){return 'distance_m,time_s,speed_kmh,throttle_pct,brake,gear,rpm\n'+lap.points.map(p=>[p.d,p.t,p.speed,p.throttle,p.brake,p.gear,p.rpm].join(',')).join('\n');}

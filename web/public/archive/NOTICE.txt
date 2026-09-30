@@ -1,0 +1,6 @@
+Historical race metadata and results: F1DB (Marcel Overdijk and contributors).
+Source: https://github.com/f1db/f1db/releases/tag/v2026.15.1
+License: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+Changes: selected fields, resolved names, grouped by season, compact JSON.
+Archive release and original checksum are recorded in index.json.
